@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.svgroz.programmers.chat.dto.CreateMessageRequest
 import org.svgroz.programmers.chat.dto.GetMessageResponse
-import org.svgroz.programmers.chat.view.MessageVO
 import org.svgroz.programmers.chat.service.MessageService
+import org.svgroz.programmers.chat.view.MessageVO
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -20,7 +20,7 @@ class MessageController(val messageService: MessageService) {
 
     @PostMapping("/message/channel/{id}")
     fun postMessageToChannelWithId(@PathVariable("id") channelId: Long, @RequestBody() request: CreateMessageRequest): Mono<ResponseEntity<*>> {
-        return messageService.postMessage(MessageVO(request.userId, channelId, request.text))
+        return messageService.saveMessage(MessageVO(userId = request.userId, channelId = channelId, text = request.text))
                 .map { ResponseEntity.status(HttpStatus.CREATED).build<Any>() }
     }
 }
